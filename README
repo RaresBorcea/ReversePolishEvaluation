@@ -1,0 +1,15 @@
+============== Tema 1 IOCLA ==============
+
+Implementarea a început de la verificarea caracterului pozitiv sau negativ al numărului (există un semn „-” care precede cifrele numărului sau nu).
+Această manifestare a fost asociată fiecărui număr din șir prin reținerea valorii 1 - dacă numărul este negativ, respectiv 0 - număr pozitiv - în registrul esi.
+Astfel, am parcurs byte cu byte (caracter cu caracter) șirul, până la întâlnirea caracterului terminator.
+Dacă am identificat un semn „-”, am verificat dacă acesta arată caracterul negativ al numărului sau este un operator în modul următor (label-ul „is_neg?”): 
+	-dacă pe poziția imediat următoare exista un spațiu (sau terminatorul), atunci „-” era operator;
+	-altfel, era urmat de o cifră și corespundea unui număr negativ.
+Indiferent de pozitivitatea numărului, am obținut restul cifrelor acestuia sub eticheta „get_nr”, prin înmulțirea numărului obținut până la pasul curent cu 10 și adunarea cifrei tocmai calculate.
+Conversia de la codul ASCII la reprezentarea numerică a cifrei s-a făcut prin scăderea codului ASCII corespunzător caracterului „zero” din codul caracterului curent.
+În funcție de pozitivitatea reținută în registrul esi pentru numărul curent, a fost adăugat semnul „-” sau nu, prin mnemonica „neg” sub eticheta „add_sign”.
+Pentru fiecare dintre cele patru operații există câte o etichetă corespunzătoare, sub care se execută operațiile de pop și calculul în sine (add, imul etc.).
+În cazul operației de împărțire, a fost necesară extinderea semnului din registrul eax, în registrul edx, prin mnemonica „cdq”.
+Toate cele patru operații au făcut în final trimitere la label-ul „push_to_stack”, care a adăugat rezultatul operației pe stivă, a făcut saltul la următorul caracter diferit de „spațiu”, dacă era necesar (a se vedea eticheta „next”) și a făcut jump înapoi la începutul etichetei generale („general_loop”), pentru parcurgerea restului șirului.
+Sub eticheta „exit” se extrage rezultatul final din stivă, care este afișat utilizatorului.
